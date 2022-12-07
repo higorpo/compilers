@@ -41,15 +41,105 @@ const tokensTypes: Record<number, string> = {
 
 console.log('\n\n\n')
 
-const input = `def principal ()
+const input = `def func1 ( int A , int B , int C , int D )
+{ 
+	int SM [ 6 ] ;
+	SM [ 0 ] = A + B ;
+	print ( SM [ 0 ] ) ;
+	SM [ 1 ] = B * C ;
+	print ( SM [ 1 ] ) ;
+	SM [ 2 ] = B / C ;
+	print ( SM [ 2 ] ) ;
+	SM [ 3 ] = A * B ;
+	print ( SM [ 3 ] ) ;
+	SM [ 4 ] = C % D ;
+	print ( SM [ 4 ] ) ;
+	SM [ 5 ] = A - B ;
+	print ( SM [ 5 ] ) ;
+	SM [ 6 ] = ( A + B ) - ( C + D ) ;
+	print ( SM [ 6 ] ) ;
+	print ( SM ) ;
+	return ;
+}
+
+def func2 ( int A , int B )
+{ 
+	print ( A ) ;
+	print ( B ) ;
+	C = A + B ;
+	print ( C ) ;
+	break ;
+	return ;
+}
+
+def func3 ( int A , int B, int C )
 {
-int C ;
-int D ;
-int R ;
-C = 4;
-D = 5;
-R = func1 (C , D );
-return ;
+    float N ; 
+		A = 10 ; 
+		B =  8 ;
+		N = 10 / 8 ;
+		C = 6 ; 
+	float M ;
+		M = N * C ;
+	print ( A ) ;
+	print ( B ) ;
+	print ( C ) ;
+	print ( N ) ;
+	print ( M ) ;
+    return ; 
+}
+
+def func4 ( int A )
+{
+    for ( A = 0 ; + 1 ; A = 20 ) {
+      A = A - 1 ;
+	  } ;
+	  print ( A ) ;
+    return ;
+}
+
+def func5 ( int A , int B , int C , int D )
+{ 
+	N = A - B ;
+	M = C - D ;
+	if ( N < M ) { 
+	N = 10 ; 
+	} 
+	else { 
+	N = 8 ; 
+	} ;
+	print ( N ) ;
+	print ( M ) ;
+	return ;
+}
+
+def fun6 ( int A , int B , int C , int D )
+{
+	N = A * B ;
+	M = C * D ;
+	if ( N >= M ) {
+		N = maior ;
+    } 
+	else {
+		N = menor ;
+	} ;
+	print ( N ) ;
+	print ( M ) ;
+	return ;
+}
+
+def principal ( )
+{
+	int X ;
+	int Z ;
+	int W ;
+	int T ;
+	int Y ;
+	X = 4 ;
+	Z = 5 ;
+	W = 10 ;
+	T = 8 ;
+	return ;
 }
 `;
 
@@ -70,7 +160,7 @@ class ErrorListener extends antlr4.error.ErrorListener {
         if (e instanceof antlr4.error.NoViableAltException) {
             this.errors.push(`\n\tERRO: Entrada não esperada: ${offendingSymbol.text} | Esperava receber token do tipo ${e.getExpectedTokens().toTokenString(GrammarParser.literalNames as string[], GrammarParser.symbolicNames as string[])}, no entanto recebeu ${tokensTypes[e.offendingToken.type]}. Token anterior é ${tokensTypes[e.startToken.type]} | \tLinha ${line}\tColuna ${column} `)
         } if (e instanceof antlr4.error.LexerNoViableAltException) {
-            this.errors.push(`\n\tERRO: Token não reconhecido na linha ${line} e coluna ${column} `)
+            this.errors.push(`\n\tERRO: Token '${e.input.toString()[e.startIndex]}' não reconhecido na linha ${line} e coluna ${column} `)
         } else {
             this.errors.push(`\n\tERRO: ${msg}\tLinha ${line}\tColuna ${column}`)
         }
@@ -80,13 +170,16 @@ class ErrorListener extends antlr4.error.ErrorListener {
 class ParserListener extends antlr4.tree.ParseTreeListener {
     static parserOrder: string[] = [];
     static visitedTerminals: string[] = [];
+    static allVisits: string[] = [];
 
     enterEveryRule(ctx: antlr4.ParserRuleContext): void {
         ParserListener.parserOrder.push(GrammarParser.ruleNames[ctx.ruleIndex]);
+        ParserListener.allVisits.push(GrammarParser.ruleNames[ctx.ruleIndex]);
     }
 
     visitTerminal(node: antlr4.tree.TerminalNode): void {
         ParserListener.visitedTerminals.push(tokensTypes[node.symbol.type])
+        ParserListener.allVisits.push(tokensTypes[node.symbol.type]);
     }
 }
 
@@ -135,25 +228,25 @@ if (lexerErrors.length > 0) {
     console.log('\t', lexerErrors.join(''))
 } else {
     console.log('Sucesso! Não há erros na análise léxica!')
-    console.log('Lista de tokens lidos: ', tokens.getTokens(0, tree.getSourceInterval().stop, null).map(token => tokensTypes[token.type]).join(' ') + '\n')
+    console.log('\nLista de tokens lidos: ', tokens.getTokens(0, tree.getSourceInterval().stop, null).map(token => tokensTypes[token.type]).join(' ') + '\n')
 
+    console.log('\n')
+
+    // Tem erros sintáticos?
+    const syntaxErrors = syntaxErrorListener.getErrors();
+
+    if (syntaxErrors.length > 0) {
+        console.log('Há um erro na análise sintática!')
+        console.log('\t', syntaxErrors.join(''))
+    } else {
+        console.log('Sucesso! Não há erros na análise sintática!')
+
+        console.log('\n')
+
+        console.log('Ordem de não-terminais visitados: ', ParserListener.parserOrder)
+        console.log('Ordem de terminais visitados: ', ParserListener.visitedTerminals)
+        console.log('Ordem de todos os símbolos: ', ParserListener.allVisits)
+        console.log('Token não terminal mais à esquerda de a que é esperado: ', ParserListener.parserOrder.reverse()[0])
+        console.log('Tabela de símbolos: ', TerminalVisitor.symbolTable)
+    }
 }
-
-console.log('\n')
-
-// Tem erros sintáticos?
-const syntaxErrors = syntaxErrorListener.getErrors();
-
-if (syntaxErrors.length > 0) {
-    console.log('Há um erro na análise sintática!')
-    console.log('\t', syntaxErrors.join(''))
-} else {
-    console.log('Sucesso! Não há erros na análise sintática!')
-}
-
-console.log('\n')
-
-console.log('Ordem do parser: ', ParserListener.parserOrder)
-console.log('Ordem de terminais visitados: ', ParserListener.visitedTerminals)
-console.log('Token não terminal mais à esquerda de a que é esperado: ', ParserListener.parserOrder.reverse()[0])
-console.log('Tabela de símbolos: ', TerminalVisitor.symbolTable)
