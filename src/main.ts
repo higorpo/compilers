@@ -3,6 +3,7 @@ import Recognizer from 'antlr4/Recognizer.js';
 
 import GrammarLexer from '../lib/ExprLexerLexer.js';
 import GrammarParser from '../lib/ExprLexerParser.js';
+import ExprLexerVisitor from '../lib/ExprLexerVisitor.js';
 
 const tokensTypes: Record<number, string> = {
     0: 'EOF',
@@ -40,7 +41,7 @@ const tokensTypes: Record<number, string> = {
 
 console.log('\n\n\n')
 
-const input = ` principal ()
+const input = `def principal ()
 {
 int C ;
 int D ;
@@ -66,9 +67,42 @@ class ErrorListener extends antlr4.error.ErrorListener {
     }
 
     syntaxError(recognizer: Recognizer, offendingSymbol: antlr4.Token, line: number, column: number, msg: string, e: antlr4.error.RecognitionException): void {
-        this.errors.push(`
-            ${msg}\tLinha ${line}\tColuna ${column} 
-        `)
+        if (e instanceof antlr4.error.NoViableAltException) {
+            this.errors.push(`\n\tERRO: Entrada não esperada: ${offendingSymbol.text} | Esperava receber token do tipo ${e.getExpectedTokens().toTokenString(GrammarParser.literalNames as string[], GrammarParser.symbolicNames as string[])}, no entanto recebeu ${tokensTypes[e.offendingToken.type]}. Token anterior é ${tokensTypes[e.startToken.type]} | \tLinha ${line}\tColuna ${column} `)
+        } if (e instanceof antlr4.error.LexerNoViableAltException) {
+            this.errors.push(`\n\tERRO: Token não reconhecido na linha ${line} e coluna ${column} `)
+        } else {
+            this.errors.push(`\n\tERRO: ${msg}\tLinha ${line}\tColuna ${column}`)
+        }
+    }
+}
+
+class ParserListener extends antlr4.tree.ParseTreeListener {
+    static parserOrder: string[] = [];
+    static visitedTerminals: string[] = [];
+
+    enterEveryRule(ctx: antlr4.ParserRuleContext): void {
+        ParserListener.parserOrder.push(GrammarParser.ruleNames[ctx.ruleIndex]);
+    }
+
+    visitTerminal(node: antlr4.tree.TerminalNode): void {
+        ParserListener.visitedTerminals.push(tokensTypes[node.symbol.type])
+    }
+}
+
+class TerminalVisitor extends ExprLexerVisitor {
+    static symbolTable: any = [];
+
+    visitTerminal(node: antlr4.tree.TerminalNode): void {
+        const symbol = tokensTypes[node.getSymbol().type];
+        if (symbol === 'IDENT' || symbol === 'INT_CONSTANT' || symbol === 'FLOAT_CONSTANT' || symbol === 'STRING_CONSTANT') {
+            TerminalVisitor.symbolTable[tokensTypes[node.getSymbol().type]] = [...TerminalVisitor.symbolTable[tokensTypes[node.getSymbol().type]] || [], {
+                value: node.getSymbol().text,
+                line: node.getPayload().line,
+                column_start: node.getPayload().start,
+                column_stop: node.getPayload().stop
+            }]
+        }
     }
 }
 
@@ -83,27 +117,29 @@ lexer.addErrorListener(lexerErrorListener)
 
 const syntaxErrorListener = new ErrorListener();
 parser.addErrorListener(syntaxErrorListener);
+parser.addParseListener(new ParserListener())
 
 const tree = parser.program()
 
-console.log('\nEntrada: ', tree.getText())
+const visitor = new TerminalVisitor()
 
-console.log('\n')
+visitor.visitProgram(tree);
 
-
-console.log('\n')
+console.log('\nEntrada: ', tree.getText() + '\n')
 
 // Tem erros léxicos?
 const lexerErrors = lexerErrorListener.getErrors();
 
 if (lexerErrors.length > 0) {
-    console.log('Há um erro na análise sintática!')
+    console.log('Há um erro na análise léxica!')
     console.log('\t', lexerErrors.join(''))
 } else {
     console.log('Sucesso! Não há erros na análise léxica!')
     console.log('Lista de tokens lidos: ', tokens.getTokens(0, tree.getSourceInterval().stop, null).map(token => tokensTypes[token.type]).join(' ') + '\n')
 
 }
+
+console.log('\n')
 
 // Tem erros sintáticos?
 const syntaxErrors = syntaxErrorListener.getErrors();
@@ -115,12 +151,9 @@ if (syntaxErrors.length > 0) {
     console.log('Sucesso! Não há erros na análise sintática!')
 }
 
+console.log('\n')
 
-
-// console.log('tokens', parser.getTokenStream().getTokens(0, 34, null).map(t => tokensTypes[t.type]).join(' '))
-// console.log('tokens', parser.getTokenStream().getTokens(0, 34, null).map(t => t.text).join(' '))
-
-
-
-// console.log(chars.toString())
-// console.log(tree.toStringTree(parser.ruleNames, parser));
+console.log('Ordem do parser: ', ParserListener.parserOrder)
+console.log('Ordem de terminais visitados: ', ParserListener.visitedTerminals)
+console.log('Token não terminal mais à esquerda de a que é esperado: ', ParserListener.parserOrder.reverse()[0])
+console.log('Tabela de símbolos: ', TerminalVisitor.symbolTable)
