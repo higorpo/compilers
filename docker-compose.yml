@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  antlr:
+    image: my_antlr:latest
+    container_name: antlr
+    build: .
+    volumes:
+      - .:/code
+    tty: true
