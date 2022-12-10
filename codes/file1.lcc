@@ -1,3 +1,104 @@
-def hello() {
+def printHelloWorld ( int A , int B )
+{ 
+	string hello;
+    hello = "Hello World!";
+    print hello;
+	return ;
+}
+
+def soma(int num1, int num2) { 
+    int resultado;
+    resultado = num1 + num2;
+    print resultado;
+    return;
+}
+
+def mult(int num1, int num2) { 
+    int resultado;
+    resultado = num1 * num2;
+    print resultado;
+    return;
+}
+
+def sub(int num1, int num2) { 
+    int resultado;
+    resultado = num1 - num2;
+    print resultado;
+    return;
+}
+
+def avaliar ( int a, int b, int c, int d, int e, int f )
+{
+    int t1;
+    int t2;
+    int t3;
+    int t4;
+    int t5;
+
+	t1 = a * b;
+    t2 = c * d;
+    t3 = e * f;
+    t4 = t1 * t2;
+    t5 = t3 * t4;
+
+    if (t1 < e) {
+        print t2;
+    }
+    if (t2 < f) {
+        print t2;
+    }
+    if (t3 > b) {
+        print t2;
+    }
+    if (t2 < c) {
+        print t2;
+    }
+    if (t1 < b) {
+        print t2;
+    } else {
+        string hello;
+        hello = "Não encontrado";
+        print hello;
+    }
+
+	return ;
+}
+
+def resultados(int a) {
+    if (a == 1) {
+        print "Resultado é 1";
+    }
+    else if (a == 2) {
+        print "Resultado é 2";
+    }
+    else if (a == 3) {
+        print "Resultado é 3";
+    }
+    else if (a == 4) {
+        print "Resultado é 4";
+    }
+    else if (a == 5) {
+        print "Resultado é 5";
+    }
+    else if (a == 6) {
+        print "Resultado é 6";
+    }
+    else if (a == 7) {
+        print "Resultado é 7";
+    }
+    else if (a == 8) {
+        print "Resultado é 8";
+    }
+    
+    return;
+}
+
+def main() {
+    int call;
+    int resultado;
+    call = printHelloWorld();
+    resultado = soma(1,2);
+    resultado = mult(3,2);
+    resultado = sub(4,1);
     return;
 }

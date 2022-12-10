@@ -1,0 +1,131 @@
+def comparaValor (int a, int b) {
+    if(a == b) {
+        print "A é igual a B";
+    }
+    else if(a >= b) {
+        print "A é maior igual a B";
+    }
+    else if(a > b) {
+        print "A é maior que B";
+    }
+    else if(b >= a) {
+        print "B é maior igual a A";
+    }
+    else if(b > a) {
+        print "B é maior que A";
+    }
+}
+
+def inteligenciaArtificial(string texto) {
+    if (texto == "Oi") {
+        print "Oi, tudo bem?";
+    }
+    if (texto == "Qual a minha idade") {
+        print "Eu não sei sua idade";
+    }
+    if (texto == "Como você está?") {
+        print "Estou ótimo, obrigado";
+    }
+    if (texto == "O brasil ganhou o hexa?") {
+        print "Não, infelizmente não";
+    }
+    if (texto == "Vamos tirar 10") {
+        print "Sim, vamos";
+    }
+    if (texto == "Qual seu nome?") {
+        print "LCC";
+    }
+}
+
+def maiorIdade(int idade) {
+    if (idade >= 18) {
+        print "Vc é maior de idade";
+    }  
+    else {
+        print "Você é menor de idade";
+    }
+}
+
+def podeBeber(int idade) {
+    string resultado;
+    resultado = maiorIdade(idade);
+
+    if(resultado == "Vc é maior de idade")
+    {
+        print "Sim";
+    } 
+    else 
+    {
+        print "Não";
+    }
+}
+
+def diaSemana(int diaSemanaInt) {
+    if (diaSemanaInt == 1) 
+    {
+        print "Segunda-feira";
+    }
+    else if (diaSemanaInt == 2) 
+    {
+        print "Terça-feira";
+    }
+    else if (diaSemanaInt == 3) 
+    {
+        print "Quarta-feira";
+    }
+    else if (diaSemanaInt == 4) 
+    {
+        print "Quinta-feira";
+    }
+    else if (diaSemanaInt == 5) 
+    {
+        print "Sexta-feira";
+    }
+    else if (diaSemanaInt == 6) 
+    {
+        print "Sábado";
+    }
+    else if (diaSemanaInt == 7) 
+    {
+        print "Domingo";
+    }
+}
+
+def converteMes(int mes) {
+    if (mes == 1) {
+        print "Janeiro";
+    }
+    else if (mes == 2) {
+        print "Fevereiro";
+    }
+    else if (mes == 3) {
+        print "Março";
+    }
+    else if (mes == 4) {
+        print "Abril";
+    }
+    else if (mes == 5) {
+        print "Maio";
+    }
+    else if (mes == 6) {
+        print "Junho";
+    }
+    else if (mes == 7) {
+        print "Julho";
+    }
+    else if (mes == 8) {
+        print "Agosto";
+    }
+    else if (mes == 9) {
+        print "Setembro";
+    }
+    else if (mes == 10) {
+        print "Outubro";
+    }
+    else if (mes == 11) {
+        print "Novembro";
+    }
+    else if (mes == 12) {
+        print "Dezembro";
+    }
+}

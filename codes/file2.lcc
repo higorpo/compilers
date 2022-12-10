@@ -1,0 +1,111 @@
+def printHelloWhile(int qtd) {
+    for(i = 0; i < qtd; i = i + 1) {
+        print "Hello World!";
+    }
+    return;
+}
+
+def definicoes ( )
+{
+	int A ;
+	int B ;
+	int C ;
+	int D ;
+	int E ;
+	A = 1 ;
+	B = 2 ;
+	C = 3 ;
+	D = 4 ;
+	E = 5 ;
+	return ;
+}
+
+def criarLista(int qtd, int mult) {
+    int resultado;
+    for(i = 0; i < qtd; i = i + 1) {
+        if(mult == 0) {
+            resultado = resultado * 1;
+        }
+        else if(mult == 1) {
+            resultado = resultado * 5;
+        }
+        else if(mult == 2) {
+            resultado = resultado * 3;
+        }
+        else if(mult == 4) {
+            resultado = resultado * 7;
+        }
+        else {
+            resultado = resultado * mult;
+        }
+    }
+
+    print resultado;
+
+    return;
+}
+
+def ePar (int valor) {
+    int resultado;
+    resultado = valor % 2;
+    if (resultado == 0) {
+        print "é par";
+    } else {
+        print "não é par";
+    }
+    return;
+}
+
+def maiorValor (int a, int b, int c, int d, int e, int f) {
+    int resultado;
+    resultado = a;
+
+    if (a >= resultado) {
+        resultado = a;
+    }
+    if (b >= resultado) {
+        resultado = b;
+    }
+    if (c >= resultado) {
+        resultado = c;
+    }
+    if (d >= resultado) {
+        resultado = d;
+    }
+    if (e >= resultado) {
+        resultado = e;
+    }
+    if (f >= resultado) {
+        resultado = f;
+    }
+
+    print resultado;
+    return;
+}
+
+def menorValor (int a, int b, int c, int d, int e, int f) {
+    int resultado;
+    resultado = -500000000;
+
+    if (a >= resultado) {
+        resultado = a;
+    }
+    if (b >= resultado) {
+        resultado = b;
+    }
+    if (c >= resultado) {
+        resultado = c;
+    }
+    if (d >= resultado) {
+        resultado = d;
+    }
+    if (e >= resultado) {
+        resultado = e;
+    }
+    if (f >= resultado) {
+        resultado = f;
+    }
+
+    print resultado;
+    return;
+}
