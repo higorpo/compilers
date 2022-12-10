@@ -41,7 +41,8 @@ LSQUARE: '[';
 RSQUARE: ']';
 
 program: statement | funclist | EOF;
-funclist: funcdef funclist | funcdef;
+funclist: funcdef m;
+m: funclist |;
 funcdef:
 	FUNCTION IDENT LPAREN paramlist RPAREN LCURLY statelist RCURLY;
 paramlist:
@@ -63,12 +64,11 @@ statement:
 	| SEMICOMMA;
 vardecl: INT IDENT b | FLOAT IDENT b | STRING IDENT b;
 b: LSQUARE INT_CONSTANT RSQUARE b |;
-atribstat:
-	lvalue ATTRIBUTION expression
-	| lvalue ATTRIBUTION allocexpression
-	| lvalue ATTRIBUTION funccall;
+atribstat: lvalue ATTRIBUTION n;
+n: expression | allocexpression | funccall;
 funccall: IDENT LPAREN paramlistcall RPAREN;
-paramlistcall: IDENT COMMA paramlistcall | IDENT |;
+paramlistcall: IDENT o |;
+o: COMMA paramlistcall |;
 printstat: PRINT expression;
 readstat: READ lvalue;
 returnnstat: RETURN;
@@ -78,8 +78,10 @@ forstat:
 	FOR LPAREN atribstat SEMICOMMA expression SEMICOMMA atribstat RPAREN statement;
 statelist: statement d;
 d: statelist |;
-allocexpression: NEW INT f | NEW FLOAT f | NEW STRING f;
-f: numexpression f | numexpression;
+allocexpression: NEW p;
+p: INT f | FLOAT f | STRING f;
+f: numexpression q;
+q: f |;
 expression: numexpression g;
 g: COMPARISON_OPERATOR h | h;
 h: numexpression |;

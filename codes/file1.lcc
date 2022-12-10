@@ -97,8 +97,5 @@ def main() {
     int call;
     int resultado;
     call = printHelloWorld();
-    resultado = soma(1,2);
-    resultado = mult(3,2);
-    resultado = sub(4,1);
     return;
 }
