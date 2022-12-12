@@ -5,8 +5,8 @@
 > Atenção: É necessário ter o Node.js instalado no computador antes de executar os passos abaixo. Para instalar o Node.js basta seguir os [passos de instalação no site oficial da ferramenta](https://nodejs.dev/).
 
 1. Instale o Typescript `npm install typescript`
-1. Instale as dependências do projeto através do comando `make install`
-2. Execute o comando `make build-project` para buildar o projeto.
+2. Instale as dependências do projeto através do comando `make install`
+3. Execute o comando `make build-project` para buildar o projeto.
 
 ### Como executar um dos arquivos de demonstração?
 
